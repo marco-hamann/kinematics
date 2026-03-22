@@ -15,21 +15,9 @@ persistent: true
 
 -->
 
-# Vorlesung 01
+# Räumliche Kinematik
 
 ## Einstieg
-
-### Überblick
-
----
-
-- **Vorlesung** 01 (Mathematische Grundlagen)
-- **Thema:** Transformationen - Koordinatenwechsel und Drehungen
-- **Name:** Marco Hamann
-- **Datum:** 16.03.2026
-
----
-persistent: true
 
 ### Motivation
 
@@ -54,11 +42,27 @@ Beschreibung von **Orientierungen** im dreidimensionalen Raum
 
 ---
 
+<div style="width: 100%; max-width: 1335px; margin: 0 auto; padding: 0; box-sizing: border-box; display: block;">
+  <div style="position: relative; width: 100%; height: 0; padding-bottom: 51.78%; /* 479 / 925 ≈ 51.78% */">
+    <img
+      src="img/Position_Orientation.png"
+      alt="Roboter-Greifer mit Beschriftung von Position und Orientierung"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 8px; display: block; object-fit: contain;"
+      loading="lazy"
+    />
+  </div>
+</div>
+
+<p>
+  <strong>Abbildung:</strong> Technische Darstellung eines Endeffektors (Greifer), der ein Werkstück von oben greift. Der Begriff 'Position' ist am Anschlusspunkt am Manipulatorarm markiert. Die 'Orientierung' des Greifers ist durch die Griffrichtung "von oben" dargestellt.
+</p>
+
+---
+
 <!-- style="color: purple;"-->
 Wir benötigen ein ein **mathematisches Verfahren**, um Positionen (Translationen) und Orientierungen (Rotationen) zu beschreiben.
 
 ---
-
 
 ### Was ist Kinematik?
 
@@ -78,7 +82,6 @@ Wir benötigen ein ein **mathematisches Verfahren**, um Positionen (Translatione
 Steuerung und Navigation von Robotern in **Anwendungen** wie industrieller Automatisierung, medizinischer Robotik, autonomer Fahrzeugtechnologie und humanoider Robotik
 
 ---
-
 
 ### Schreibweisen
 
@@ -131,7 +134,6 @@ mit der affinen Koordinate $t\in\mathbb{R}$ beschrieben.
 
 ---
 
-
 ### Basiswechsel
 
 ---
@@ -162,47 +164,65 @@ mit der reellen Matrix $A$.
 
 ---
 
-Nachfolgend ist unter Verwendung der Programmiersprache [Octave](https://www.octave.org) der Code einer Funktion angegeben, mit der zu zwei gegebenen Orthonormalbasen (ohne Test!) die Matrix für den Basiswechsel berechnet wird.
+Nachfolgend ist unter Verwendung der Programmiersprache [Octave](https://www.octave.org) die Funktion `basistransformation()` definiert, mit der zu zwei gegebenen Orthonormalbasen $B_j$ die Matrix für den Basiswechsel $B_2$ nach $B_1$ berechnet wird. Im Script 'main.m' können beide Basen gewählt und die Funktion mit beiden als Inputvariable ausgeführt werden. 
 
-```octave
-% Beispiel: Standardbasis B1 und gedrehte Basis B2 um z-Achse
-B1 = [1, 0, 0; 0, 1, 0; 0, 0, 1];
-theta = pi/4;
-B2 = [cos(theta), -sin(theta), 0; sin(theta), cos(theta), 0; 0, 0, 1];
+Variieren Sie im angegebenen Beispiel die Orthonaromalbasen und führen Sie die Funktion aus. Welchen Tests wird die Eingabe unterzogen?
 
-% Funktion zur Berechnung des Basiswechsels
-function T = basistransformation (B1, B2)
+---
+
+```octave -basistransformation.m
+% Definition der Funktion
+function T = basistransformation (B1, B2, eps)
+
+  if (!isnumeric(B1) || !isnumeric(B2))
+    error("@basistransformation: Eingabeparameter müssen Matrizen sein!");
+  endif
+
   if (norm(B1*transpose(B1)-eye(3), "fro") >= eps)
     error("@basistransformation: erstes Argument muss orthogonal sein!");
   endif
+
   if (norm(B2*transpose(B2)-eye(3), "fro") >= eps)
     error("@basistransformation: zweites Argument muss orthogonal sein!");
   endif
+
   if (abs(det(B1) - 1.0) >= eps)
     error("@basistransformation: Determinante des ersten Arguments ist nicht gleich 1!");
   endif
+
   if (abs(det(B2) - 1.0) >= eps)
     error("@basistransformation: Determinante des zweiten Arguments ist nicht gleich 1!");
   endif
+
   T = zeros(3, 3);
   for i = 1:3
     for j = 1:3
       T(i,j) = dot(B1(:,i), B2(:,j));
     endfor
   endfor
-  T;
+
 endfunction
+```
+```octave +main.m
+% Definition der Basen
+B1 = [1, 0, 0; 0, 1, 0; 0, 0, 1];
+theta = pi/4;
+B2 = [cos(theta), -sin(theta), 0; sin(theta), cos(theta), 0; 0, 0, 1];
+
+eps = 1.0E-09;
 
 % Aufruf der Funktion
 T = basistransformation(B1, B2, eps);
-
-% Ausgabe der Matrix T
-disp("Basiswechselmatrix T (von B1 nach B2):");
+disp("Matrix T des Basiswechsels (von B1 nach B2):");
 disp(T);
-```
-@LIA.eval(`["basistransformation.m"]`, `none`, `octave --no-window-system basistransformation.m`)
 
-Variierend Sie das angegebene Beispiel und führen Sie die Funktion aus. Passen Sie die Funktion ggf. an.
+% Koordinatentransformation
+x = [5; -2; 1];
+y = T * x;
+disp("Koordinatenvektor bezüglich B2 transormiert sich in B1:")
+disp(y);
+```
+@LIA.eval(`["basistransformation.m", "main.m"]`, `none`, `octave -q --no-window-system main.m`)
 
 ---
 
@@ -256,10 +276,10 @@ Welche Punkte $\underline{x}$ bleiben unter der Transformation $\Phi$ invariant,
         \begin{pmatrix} \cos{\varphi}-1 & -\sin{\varphi} & 0 \\ \sin{\varphi} & \cos{\varphi}-1 & 0 \\ 0 & 0 & 0 \end{pmatrix}\cdot\begin{pmatrix} \xi_1 \\ \xi_2 \\ \xi_3 \end{pmatrix}=\begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}\quad\leadsto\quad \begin{pmatrix} \xi_1 \\ \xi_2 \\ \xi_3 \end{pmatrix}=s\cdot\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} $$ mit $s\in\mathbb{R}$.
 
 **Bemerkung.** Analog zum vorstehenden Beispiel beschreiben die Matrizen $$
-        A_x=\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos{\varphi} & -\sin{\varphi} \\ 0 & \sin{\varphi} & \cos{\varphi} \end{pmatrix}\,,\quad
-        A_y=\begin{pmatrix} \cos{\varphi} & 0 & \sin{\varphi} \\ 0 & 1 & 0 \\ -\sin{\varphi} & 0 & \cos{\varphi} \end{pmatrix}\quad\text{und}\quad
-        A_z=\begin{pmatrix} \cos{\varphi} & -\sin{\varphi} & 0 \\ \sin{\varphi} & \cos{\varphi} & 0 \\ 0 & 0 & 1 \end{pmatrix} $$
-Drehungen um die $x$-, die $y$- bzw. um die $z$-Achse des gegebenen Koordinatensystems in $\mathbb{R}^3$.
+        A_1=\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos{\varphi} & -\sin{\varphi} \\ 0 & \sin{\varphi} & \cos{\varphi} \end{pmatrix}\,,\quad
+        A_2=\begin{pmatrix} \cos{\varphi} & 0 & \sin{\varphi} \\ 0 & 1 & 0 \\ -\sin{\varphi} & 0 & \cos{\varphi} \end{pmatrix}\quad\text{und}\quad
+        A_3=\begin{pmatrix} \cos{\varphi} & -\sin{\varphi} & 0 \\ \sin{\varphi} & \cos{\varphi} & 0 \\ 0 & 0 & 1 \end{pmatrix} $$
+Drehungen um die $x_1$-, die $x_2$- bzw. um die $x_3$-Achse des gegebenen Koordinatensystems in $\mathbb{R}^3$.
 
 ---
 
