@@ -283,4 +283,184 @@ Drehungen um die $x_1$-, die $x_2$- bzw. um die $x_3$-Achse des gegebenen Koordi
 
 ---
 
+### Koordinatenwechsel
+
+---
+
+Für den Wechsel zweier kartesischer Koordinatensysteme mit verschiedenen Ursprüngen gilt:
+
+<!-- style="background-color: lightgray;"-->
+>**Koordinatenwechsel.** Bezeichnen respektive $$
+  \mathfrak{G}=(\underline{u}\,|\,\underline{g}_1,\underline{g}_2,\underline{g}_3)\quad\text{und}\quad\mathfrak{R}=(\underline{o}\,|\,\underline{r}_1,\underline{r}_2,\underline{r}_3) $$
+>das Gangkoordinatensystem und Rastkoordinatensystem mit verschiedenem Ursprung $\underline{u}\not=\underline{o}$ und bezeichnen $$
+  \underline{x}_0=(x_1,x_2,x_3)^\top\quad\text{bzw.}\quad\underline{x}_1=(\xi_1,\xi_2,\xi_3)^\top $$
+>Rastkoordinaten bzw. Gangkoordinaten eines Punktes $\underline{x}$, so ergibt sich aus Abschnitt [Basiswechsel](#Basiswechsel) die Darstellung $$
+  \underline{x}_0=\underline{u}_0+A\cdot\underline{x}_1\quad\text{mit}\quad A\in\mathbb{R}^{(3,3)}\,,\;A\cdot A^\top=E\,,\;\det{A}=1 $$
+>für den Koordinatenwechsel $\mathfrak{G}\to\mathfrak{R}$. Hierin sind $\underline{u}_0$ die Rastkoordinaten von $\underline{u}$ mit $$
+  \underline{x}_0=\underline{u}_0+A\cdot\underline{o}=\underline{u}_0 $$
+
+Für den Differenzvektor zweier Punkte $\underline{x}$ und $\underline{y}$ gilt $$
+  \underline{v}_1=\underline{y}_1-\underline{x}_1\quad\text{sowie}\quad
+  \underline{v}_0=\underline{y}_0-\underline{x}_0=A\cdot(\underline{y}_1-\underline{x}_1)=A\cdot\underline{v}_1 $$
+d. h. die Transformation eines freien (Richtungs-) Vektors ist linear unter dem Wechsel $\mathfrak{G}\to\mathfrak{R}$.
+
+---
+
+**Bemerkung 1.** Die Anteile $\underline{u}_0$ und $A$ des Koordinatenwechsels können als [lineare Abbildung](https://de.wikipedia.org/wiki/Lineare_Abbildung) miteinander kombiniert werden. $$
+  \begin{pmatrix} \underline{x}_0 \\ \textcolor{purple}{1} \end{pmatrix}=\begin{pmatrix} A & \underline{u}_0 \\ \textcolor{purple}{\underline{o}^\top} & \textcolor{purple}{1} \end{pmatrix}\cdot\begin{pmatrix} \underline{x}_1 \\ \textcolor{purple}{1} \end{pmatrix} $$
+für die Koordinatentransformation von Ortsvektoren beziehungsweise $$
+  \begin{pmatrix} \underline{v}_0 \\ \textcolor{purple}{0} \end{pmatrix}=\begin{pmatrix} A & \underline{o} \\ \textcolor{purple}{\underline{o}^\top} & \textcolor{purple}{1} \end{pmatrix}\cdot\begin{pmatrix} \underline{v}_1 \\ \textcolor{purple}{0} \end{pmatrix} $$
+für die Transformation von freien Vektoren (Richtungen). Vektoren und Transformationsmatrix werden hierbei jeweils um eine **zusätzliche Zeile**<!-- style="color: purple;"--> erweitert[^1], so dass Matrixmultiplikation und Vektoraddition auf eine einzige Matrixmultiplikation reduziert werden kann. Die erweiterte Matrix vom Typ $(4,4)$ wird geränderte Matrix genannt, die in vorstehenden Formelzeilen angeführten Matrix-Vektor-Produkte **homogene Darstellung** des Koordinatenwechsels.
+
+Die Spalten der geränderten Matrix $$
+  \begin{pmatrix} \underline{u}_0 \\ 1 \end{pmatrix}\quad\text{bzw.}\quad \begin{pmatrix} A[j] \\ 0 \end{pmatrix} $$
+für die $j$-te Spalte von $A$ beschreiben die **geränderten Rastkoordinaten** des Koordinatenursprungs $\underline{u}$ beziehungsweise der Basisvektoren $\underline{g}_j=A[j]$ des Gangkoordinatensystems $\mathfrak{G}$.
+
+---
+
+**Beispiel 1.** Zur Beschreibung kinematischer Ketten werden durch Rotationsgelenke miteinander gekoppelte, benachbarte Glieder mit kartesischen Koordinatensystemen verknüpft.
+
+* Geht hierbei $\underline{u}$ aus $\underline{o}$ durch Verschiebung entlang $\underline{r}_1$ um den (festen) Betrag $d\in\mathbb{R}$ hervor und
+* wird das Gangkoordinatensystem um $\underline{r}_1$ um den Winkel $\varphi\in[0,2\pi)$ gedreht
+
+so berechnet sich der Koordinatenwechsel $\mathfrak{G}\to\mathfrak{R}$ gemäß $$
+  \underline{x}_0=\underline{u}_0+A\cdot\underline{x}_1\quad\text{mit}\quad \underline{u}_0=\begin{pmatrix} 0 \\ 0 \\ d \end{pmatrix}\quad\text{sowie}\quad A=\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos{\varphi} & -\sin{\varphi} \\ 0 & \sin{\varphi} & \cos{\varphi} \end{pmatrix} $$
+mit $\varphi\in[0,2\pi)$. In homogener Schreibweise stellt sich der Koordinatenwechsel gemäß $$
+  \left(\begin{array}{c} \underline{x}_0 \\ \textcolor{purple}{1} \end{array}\right) = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & \cos{\varphi} & -\sin{\varphi} & 0 \\ 0 & \sin{\varphi} & \cos{\varphi} & d \\ \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{1} \end{pmatrix}\cdot \left(\begin{array}{c} \underline{x}_1 \\ \textcolor{purple}{1} \end{array}\right) $$
+Diese Matrizen werden beim Koordinatenwechsel zwischen benachbarten Gliedern einer kinematischen Kette in der direkten kinematischen Aufgabe verwendet.
+
+---
+
+[^1]: Die Zeile wird im ingenieurwissenschaftlichen Kontext oft "am Ende" ergänzt. Diesem Vorgehen werden wir im Weiteren Verlauf der Vorlesung folgen.
+
+### Schraubungen
+
+---
+
+Analog zuvor lässt sich auch hier die Formel für den Koordinatenwechsel als Bewegung des dreidimensionalen Raumes deuten, die das Rastkoordinatensystem $\mathfrak{R}$ mit dem Gangkoordinatensystem $\mathfrak{G}$ zur Deckung bringt, vergleiche Abschnitt [Rotationen in 3D](#Rotationen-in-3D).
+
+<!-- style="background-color: lightgray;"-->
+> **Bewegungen in 3D**. Die durch die Abbildung $$ \kappa:\mathfrak{R}\to\mathfrak{G}\quad\text{mit}\quad\kappa(\underline{o})=\underline{u}\quad\text{sowie}\quad\kappa(\underline{r}_j)=\underline{g}_j\quad\text{und}\quad j\in\{1,2,3\} $$ bestimmte Bewegung des dreidimensionalen Raumes bildet jeden mit $\mathfrak{R}$ fest verbundenen Punkt $\underline{x}$ mit den Rastkoordinaten $(\xi_1,\xi_2,\xi_3)$ ab auf einen Punkt $\underline{x}'$ mit den Rastkoordinaten $$
+  \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \end{array}\right]_0 = \left[\begin{array}{c} u_1 \\ u_2 \\ u_3 \end{array}\right]_0+A\cdot\left[\begin{array}{c} \xi_1 \\ \xi_2 \\ \xi_3 \end{array}\right]_0 $$
+> worin $A\cdot A^\top=E$ mit dreireihiger Einheitsmatrix $E$ und $\det{A}=1$ gelten.
+
+
+**Beispiel 1.** Für die im Abschnitt [Rotationen in 3D](#Rotationen-in-3D) genannten Matrizen zur Beschreibung von Drehungen um die Koordinatenachsen im $\mathbb{R}^3$ lassen sich die geränderten Matrizen wie in nachstehender Tabelle bilden.
+
+| Drehachse   | Drehwinkel   | Rotationsmatrix   | homogene Darstellung   |
+| :--------- | :--------- | :--------- | :--------- |
+| $x_1$-Achse     | $\varphi$     | $A_1=\begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos{\varphi} & -\sin{\varphi} \\ 0 & \sin{\varphi} & \cos{\varphi} \end{pmatrix}$     | $\utilde{A}_1=\begin{pmatrix} 1 & 0 & 0 & \textcolor{black}{0} \\ 0 & \cos{\varphi} & -\sin{\varphi} & \textcolor{black}{0} \\ 0 & \sin{\varphi} & \cos{\varphi} & \textcolor{black}{0} \\ \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{1} \end{pmatrix}$     |
+| $x_2$-Achse     | $\varphi_2$     | $A_2=\begin{pmatrix} \cos{\varphi_2} & 0 & \sin{\varphi_2} \\ 0 & 1 & 0 \\ -\sin{\varphi_2} & 0 & \cos{\varphi_2} \end{pmatrix}$     | $\utilde{A}_2=\begin{pmatrix} \cos{\varphi_2} & 0 & \sin{\varphi_2} & \textcolor{black}{0} \\ 0 & 1 & 0 & \textcolor{black}{0} \\ -\sin{\varphi_2} & 0 & \cos{\varphi_2} & \textcolor{black}{0} \\ \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{1} \end{pmatrix}$     |
+| $x_3$-Achse     | $\varphi_3$     | $A_2=\begin{pmatrix} 1 & 0 & 0 \\ \cos{\varphi_3} & -\sin{\varphi_3} & 0 \\ \sin{\varphi_3} & \cos{\varphi_3} & 0 \end{pmatrix}$     | $\utilde{A}_3=\begin{pmatrix}  1 & 0 & 0 & 0\\ \cos{\varphi_3} & -\sin{\varphi_3} & 0 & 0\\ \sin{\varphi_3} & \cos{\varphi_3} & 0 & 0 \\ \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{1} \end{pmatrix}$     |
+
+**Beispiel 2.** Für eine reine Translation $\tau$ von $\mathfrak{R}$ in Richtung des Vektors $\underline{u}\in\mathbb{R}^3$ mit $\underline{u}\not=\underline{o}$ berechnet sich $$
+  \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \end{array}\right]_0 = \left[\begin{array}{c} u_1 \\ u_2 \\ u_3 \end{array}\right]_0+E\cdot\left[\begin{array}{c} \xi_1 \\ \xi_2 \\ \xi_3 \end{array}\right]_0 $$
+beziehungsweise in homogener Darstellung $$
+  \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \\ \textcolor{purple}{1} \end{array}\right]_0 = \left(\begin{array}{cccc} 1 & 0 & 0 & u_1 \\ 0 & 1 & 0 & u_2 \\ 0 & 0 & 1 & u_3 \\ \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{0} & \textcolor{purple}{1} \end{array}\right)\cdot\left[\begin{array}{c} \xi_1 \\ \xi_2 \\ \xi_3 \\ \textcolor{purple}{1} \end{array}\right]_0 $$
+
+Unter Verwendung der Programmiersprache [Octave](https://www.octave.org) können die Rastkoordinaten des Bildpunktes $\underline{y}$ unter einer Bewegung berechnet werden.
+
+```octave
+% Definition der Bewegung
+phi = pi/4;
+A = [cos(phi), -sin(phi), 0; sin(phi), cos(phi), 0; 0, 0, 1];
+u = [1; 2; 3];
+
+% Bewegung eines Punktes
+x = [5; -2; 1];
+y = u + A * x;
+disp("Bewegung des Punktes x nach y:")
+disp(y);
+```
+@LIA.eval(`["main.m"]`, `none`, `octave -q --no-window-system main.m`)
+
+---
+
+>**Definition 1.** Die Hintereinanderausführung (Komposition)
+>
+>1. einer *Drehung* um eine Gerade $d$ des dreidimensionalen Raumes mit Drehwinkel $\varphi$ bezogen auf einen Einheitsrichtungsvektor $\underline{d}$ von $d$ mit
+>2. einer *Translation* entlang $d$ mit Schubvektor $\underline{u}=v\cdot\underline{d}$ mit $v\in\mathbb{R}$ heißt [Schraubung](https://de.wikipedia.org/wiki/Schraubung) $\sigma$.
+>
+> Für $v>0$ heißt die Schraubung $\sigma$ **rechtsgängig**, für $v<0$ heißt $\sigma$ **linksgängig**. Für $v=0$ ist die Schraubung $\sigma$ eine reine Drehung, wohin $\sigma$ für $\varphi=0$ und $v\not=0$ eine reine Translation ist.
+
+Damit folgt der nachstehende Satz.
+
+>**Satz 1.** In der Verallgemeinerung der betrachteten Beispiele ergeben sich:
+>
+>1. Jede Bewegung des dreidimensionalen Raumes ist darstellbar in der Form $$ \sigma:\underline{x}\mapsto\underline{x}'=\underline{u}+A\cdot\underline{x}\quad\text{mit}\quad A\in\mathbb{R}^{(3,3)}\,,\;A\cdot A^\top=E\,,\;\det{A}=1 $$
+>2. Jede dieser Bewegungen $\sigma$ ist eine Schraubung, d. i. die Hintereinanderausführung einer Drehung um eine Gerade $d\subset\mathbb{R}^3$ und eine anschließende Translation entlang $d$.
+>3. Ist $A\not=E$ (Einheitsmatrix) und $\underline{d}$ Einheitsvektor in Richtung der Schraubachse $d$ sowie $\varphi$ Bogenmaß des Drehwinkels, dann ist nach Abschnitt [Basiswechsel](#Basiswechsel) $A\cdot\underline{d}=\underline{d}$ und $$
+        \underline{s}=\frac{1}{2}\cdot\left[\underline{u}-(\underline{u}\cdot\underline{d})\cdot\underline{d}+\cot{\left(\frac{\varphi}{2}\right)}\cdot(\underline{d}\times\underline{u})\right] $$ ist ein Punkt auf der Drehachse $d$.
+>4. Für $A\not=E$ ist $\sigma$ genau dann eine Drehung, wenn $\underline{u}\cdot\underline{d}=0$.
+
+**Bemerkung 1.** Die Schraubung $\sigma$ hat bezüglich eines beliebigen kartesischen Koordinatensystems die Darstellung $$
+  \sigma:\underline{x}\mapsto\underline{x}'=A\cdot(\underline{x}-\underline{s})+\underline{s}+(\underline{u}\cdot\underline{d})\cdot\underline{d} $$
+worin $\underline{s}$ einen Punkt auf der Schrubachse bezeichnet.
+
+---
+
+### SO(3) und SE(3)
+
+---
+
+In diesem Abschnitt werden Koordinatenwechsel beziehungsweise Bewegungen wiederholt hintereinander ausgeführt. Betrachtet werden insbesondere algebraische Eigenschaften dieser Komposition. Die algebraischen Strukturen sind insbesondere in der Robotik von Interesse.
+
+Für die nachfolgenden Eigenschaften bezeichnen $\kappa_j$ beliebige Bewegungen des dreidimensionalen Raumes mit $$
+  \underline{x}'=\underline{u}_j+A_j\cdot\underline{x}\quad\text{mit}\quad A_j\cdot A_j^\top=E\,,\;\det{A_j}=1\,,\;\underline{u}_j\in\mathbb{R}^3 $$
+worin $j\in I\subset\mathbb{N}$.
+
+---
+
+Komposition
+===
+
+Die Hintereinanderausführung (Komposition) von '$\kappa_2$ nach $\kappa_1$' berechnet sich gemäß $$
+  \kappa_2\circ\kappa_1:\; \underline{x}'=A_2\cdot(A_1\cdot\underline{x}+\underline{u}_1)+\underline{u}_2=(A_2\cdot A_1)\cdot\underline{x}+A_2\cdot\underline{u}_1+\underline{u}_2 $$
+Der Summand $\underline{u}:=A_2\cdot\underline{u}_1+\underline{u}_2$ ist ein dreidimensionaler Vektor; daneben berechnet sich für das Matrizenprodukt $A:=A_2\cdot A_1$ $$
+  A\cdot A^\top=(A_2\cdot A_1)\cdot(A_2\cdot A_1) \top=(A_2\cdot A_1)\cdot\left(A_1^\top\cdot A_1^\top\right)=A_2\cdot(A_1\cdot A_1^\top)\cdot A_2^\top=E $$
+Darüber hinaus folgt mit dem Multiplikationssatz für Determinanten $$
+  \det{A}=\det{(A_2\cdot A_1)}=\det{A_2}\cdot\det{A_1}=1 $$
+Hieraus folgt, dass die Komposition $(\kappa_2\circ\kappa_1)$ wieder eine Bewegung des dreidimensionalen Raums beschreibt: Die Menge aller Bewgungen $\kappa$ des dreidimensionalen Raumes ist demnach abgeschlossen unter der Komposition.
+
+---
+
+Umkehrabbildung
+===
+
+Es sei eine Bewegung des dreidimensionalen Raumes $\kappa:\underline{x}\mapsto\underline{x}'$ mit $\underline{x}'=A\cdot \underline{x}+\underline{u}$ wie zuvor festgelegt. Durch Multiplikation beider Seiten der Darstellung 'von links' mit $A^\top$ lässt sich $$
+  A^\top\cdot \underline{x}'=A^\top\cdot(A\cdot \underline{x}+\underline{u})=(A^\top\cdot A)\cdot \underline{x}+A^\top\cdot\underline{u}\quad\leftrightarrow\quad \underline{x}=A^\top\cdot\underline{x}'-A^\top\cdot\underline{u} $$
+Dabei beschreibt $B=A^\top$ mit $\det{B}=1$ eine Drehung, die Abbildung $\kappa^{-1}:\underline{x}'\mapsto\underline{x}$ wieder eine Bewegung des dreidimensionalen Raumes.
+
+---
+
+Assoziativität
+===
+
+Die Komposition $\kappa_3\circ(\kappa_2\circ\kappa_1)$ berechnet sich unter Nutzung des obigen Ergebnisses $$
+  \underline{x}'=A_3\cdot((A_2\cdot A_1)\cdot\underline{x}+A_2\cdot\underline{u}_1+\underline{u}_2)+\underline{u}_3 = (A_3\cdot A_2\cdot A_1)\cdot\underline{x}+(A_3\cdot A_2)\cdot\underline{u}_1+A_3\cdot\underline{u}_2+\underline{u}_3 $$
+analog berechnet sich $(\kappa_3\circ\kappa_2)\circ\kappa_1$ analog $$
+  \underline{x}'=(A_3\cdot A_2)\cdot(A_1\cdot\underline{x}+A_2\cdot\underline{u}_1)+A_3\cdot\underline{u}_2+\underline{u}_3 = (A_3\cdot A_2\cdot A_1)\cdot\underline{x}+(A_3\cdot A_2)\cdot\underline{u}_1+A_3\cdot\underline{u}_2+\underline{u}_3 $$
+Dies zeigt, dass die Komposition assoziativ ist.
+
+---
+
+Keine Kommutativität
+===
+
+Aus der Bildung von '$\kappa_1$ nach $\kappa_2$' folgt unmittelbar $\kappa_2\circ\kappa_1\stackrel{i. A.}{\not=}\kappa_1\circ\kappa_2$ Die Komposition ist somit **nicht kommutativ**.
+
+---
+
+Identische Abbildung
+===
+
+Die Abbildung $\underline{x}'=E\cdot\underline{x}+\underline{o}$ mit dreireihiger Einheitsmatrix $E$ und dreidimensionalem Nullvektor $\underline{o}$heißt **identische Abbildung**.
+
+---
+
+Damit gilt schließlich der nachstehende Satz.
+
+>**Satz 1.** Die Menge aller Bewegungen des dreidimensionalen Raumes bildet bezüglich der Komposition eine **Gruppe**, die spezielle euklidische Gruppe $SE(3)$.
+
+**Bemerkung 1.** Ebenso bildet die Menge aller Drehungen um Geraden durch den Koordinatenursprung $d\ni\underline{u}$ eine **Untergruppe** von $SE(3)$, die spezielle orthogonale Gruppe $SO(3)<SE(3)$.
 
