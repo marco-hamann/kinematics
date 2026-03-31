@@ -399,9 +399,12 @@ worin $\underline{s}$ einen Punkt auf der Schrubachse bezeichnet.
 
 ---
 
-### SO(3) und SE(3)
+### Räumliche Bewegungen
 
 ---
+
+Spezielle euklidische Gruppe
+===
 
 In diesem Abschnitt werden Koordinatenwechsel beziehungsweise Bewegungen wiederholt hintereinander ausgeführt. Betrachtet werden insbesondere algebraische Eigenschaften dieser Komposition. Die algebraischen Strukturen sind insbesondere in der Robotik von Interesse.
 
@@ -412,7 +415,7 @@ worin $j\in I\subset\mathbb{N}$.
 ---
 
 Komposition
-===
+---
 
 Die Hintereinanderausführung (Komposition) von '$\kappa_2$ nach $\kappa_1$' berechnet sich gemäß $$
   \kappa_2\circ\kappa_1:\; \underline{x}'=A_2\cdot(A_1\cdot\underline{x}+\underline{u}_1)+\underline{u}_2=(A_2\cdot A_1)\cdot\underline{x}+A_2\cdot\underline{u}_1+\underline{u}_2 $$
@@ -425,7 +428,7 @@ Hieraus folgt, dass die Komposition $(\kappa_2\circ\kappa_1)$ wieder eine Bewegu
 ---
 
 Umkehrabbildung
-===
+---
 
 Es sei eine Bewegung des dreidimensionalen Raumes $\kappa:\underline{x}\mapsto\underline{x}'$ mit $\underline{x}'=A\cdot \underline{x}+\underline{u}$ wie zuvor festgelegt. Durch Multiplikation beider Seiten der Darstellung 'von links' mit $A^\top$ lässt sich $$
   A^\top\cdot \underline{x}'=A^\top\cdot(A\cdot \underline{x}+\underline{u})=(A^\top\cdot A)\cdot \underline{x}+A^\top\cdot\underline{u}\quad\leftrightarrow\quad \underline{x}=A^\top\cdot\underline{x}'-A^\top\cdot\underline{u} $$
@@ -434,7 +437,7 @@ Dabei beschreibt $B=A^\top$ mit $\det{B}=1$ eine Drehung, die Abbildung $\kappa^
 ---
 
 Assoziativität
-===
+---
 
 Die Komposition $\kappa_3\circ(\kappa_2\circ\kappa_1)$ berechnet sich unter Nutzung des obigen Ergebnisses $$
   \underline{x}'=A_3\cdot((A_2\cdot A_1)\cdot\underline{x}+A_2\cdot\underline{u}_1+\underline{u}_2)+\underline{u}_3 = (A_3\cdot A_2\cdot A_1)\cdot\underline{x}+(A_3\cdot A_2)\cdot\underline{u}_1+A_3\cdot\underline{u}_2+\underline{u}_3 $$
@@ -444,23 +447,250 @@ Dies zeigt, dass die Komposition assoziativ ist.
 
 ---
 
-Keine Kommutativität
-===
+Nichtkommutativität
+---
 
 Aus der Bildung von '$\kappa_1$ nach $\kappa_2$' folgt unmittelbar $\kappa_2\circ\kappa_1\stackrel{i. A.}{\not=}\kappa_1\circ\kappa_2$ Die Komposition ist somit **nicht kommutativ**.
 
 ---
 
 Identische Abbildung
-===
+---
 
-Die Abbildung $\underline{x}'=E\cdot\underline{x}+\underline{o}$ mit dreireihiger Einheitsmatrix $E$ und dreidimensionalem Nullvektor $\underline{o}$heißt **identische Abbildung**.
+Die Abbildung $\underline{x}'=E\cdot\underline{x}+\underline{o}$ mit dreireihiger Einheitsmatrix $E$ und dreidimensionalem Nullvektor $\underline{o}$ heißt **identische Abbildung**.
 
 ---
 
 Damit gilt schließlich der nachstehende Satz.
 
->**Satz 1.** Die Menge aller Bewegungen des dreidimensionalen Raumes bildet bezüglich der Komposition eine **Gruppe**, die spezielle euklidische Gruppe $SE(3)$.
+>**Satz 1.** Die Menge aller Drehungen um Geraden durch den Koordinatenursprung $d\ni\underline{u}$ bildet bildet bezüglich der Komposition eine **Gruppe**, die spezielle orthogonale Gruppe $\mathrm{SO}(3)$. 
+>
+>Elemente aus $\mathrm{SO}(3)$ lassen sich durch orthogonale Matrizen $A\in\mathbb{R}^{3,3}$ mit $$
+  A\cdot A^\top=A^\top\cdot A=E\quad\text{und}\quad\det{A}=1 $$
+>beschreiben.
 
-**Bemerkung 1.** Ebenso bildet die Menge aller Drehungen um Geraden durch den Koordinatenursprung $d\ni\underline{u}$ eine **Untergruppe** von $SE(3)$, die spezielle orthogonale Gruppe $SO(3)<SE(3)$.
+>**Satz 2.** Die Menge aller Bewegungen des dreidimensionalen Raumes bildet bezüglich der Komposition eine **Gruppe**, die spezielle euklidische Gruppe $\mathrm{SE}(3)$. Elemente aus $\mathrm{SE}(3)$ lassen sich durch Paare $(A,\underline{u})$ mit $\underline{u}\in\mathbb{R}^3$ und $A\in \mathrm{SO}(3)$ beschreiben. 
+>
+> Die spezielle euklidische Gruppe ist semidirektes Produkt von $\mathrm{SO}(3)$ mit $\mathbb{R}^3$ $$
+  \mathrm{SE}(3)=\mathrm{SO}(3)\ltimes\mathbb{R}^3\quad\text{mit}\quad \left((A_2,\underline{u}_2),(A_1,\underline{u}_1)\right)\mapsto(A_2,\underline{u}_2)\circ(A_1,\underline{u}_1)=(A_2\cdot A_1,A_2\cdot\underline{u}_1+\underline{u}_2) $$
 
+---
+
+Untergruppen
+===
+
+Jede zusammenhängende Untergruppe von $\mathrm{SE}(3)$ erzeugt in den Komponenten $\mathrm{SO}(3)$ und $\mathbb{R}^3$ jeweils eine zusammenhängende Untergruppe. Insbesondere gilt:
+
+- Die Projektion auf $\mathrm{SO}(3)$ liefert eine zusammenhängende Untergruppe von $\mathrm{SO}(3)$, z. B. $$
+  \mathrm{SO}(3)\,,\quad \mathrm{SO}(2)\quad\text{oder}\quad \mathrm{id} $$
+  d. h. neben der vollen Gruppe alle Drehungen um eine feste Achse bzw. die triviale Gruppe.
+- Die Projektion auf $\mathbb{R}^3$ liefert eine zusammenhängende Untergruppe von $\mathbb{R}^3$, also einen linearen Unterraum, z. B. $$
+  \mathbb{R}^3\,,\quad\mathbb{R}^2\,,\quad \mathbb{R}\,,\quad p\mathbb{Z}\quad\text{oder}\quad \mathrm{id} $$
+
+Die Struktur der Untergruppe hängt von der Wechselwirkung zwischen Drehung und Translation ab. Typische relevante zusammenhängende Untergruppen in der räumlichen Kinematik sind:
+
+1. **Translationen** entlang einer festen Achse: $\mathbb{R}<\mathbb{R}^3$ mit identischer Abbildung in $\mathrm{SO}(3)$
+2. **Drehungen** um eine feste Achse: $\mathrm{SO}(2)<\mathrm{SO}(3)$, mit identischer Abbildung in $\mathbb{R}$
+3. **Schraubbewegungen** um eine feste Achse mit reellem Schraubparameter $p$: $H_p<\mathrm{SE}(3)$ bzeichnet die Kombination aus Drehung um eine Achse und Translation entlang derselben Achse und erzeugt eine eindimensionale, zusammenhängende Untergruppe
+
+Diese Untergruppen sind entscheidend für die Beschreibung von Bewegungssystemen in der räumlichen Kinematik, wie z. B. zur Beschreibung von Gelenken in Robotern. Die nachstehende Tabelle gibt eine Übersicht über zusammenhängende Untergruppen von $\mathrm{SE}(3)$. Hierin beschreibt die Dimension die Anzahl der wesentlich zu unterscheidenden Bewegungsparameter.
+
+| Dimension   | Untergruppen   | ebs.  | ebs.  | ebs.  |
+| :--------- | :--------- | :--------- | :--------- | :--------- |
+| $6$     | $\mathrm{SE}(3)$     |      |      |      |
+| $5$     | -     |      |      |      |
+| $4$     | $\mathrm{SO}(2)\ltimes\mathbb{R}^3$     |      |      |      |
+| $3$     | $\mathrm{SO}(2)\ltimes\mathbb{R}^2$     | $\mathrm{SO}(3)$     | $\mathbb{R}^3$     | $H_p\ltimes\mathbb{R}^2$     |
+| $2$     | $\mathrm{SO}(2)\times\mathbb{R}$     |       | $\mathbb{R}^2$    |      |
+| $1$     |      | $\mathrm{SO}(2)$     | $\mathbb{R}$     | $H_p$     |
+
+Für die Untersuchung dieser Untergruppen reicht es zu prüfen, dass die Translationsuntergruppen $\mathrm{T}\leq\mathbb{R}^3$ unter [Konjugation](https://de.wikipedia.org/wiki/Konjugation_%28Gruppentheorie%29) mit Elementen aus der Untergruppe $\mathrm{D}\leq\mathrm{SO}(3)$ der Drehungen ist. Unter Verwendung der homogenen Darstellung von räumlichen Bewegungen schreibt sich dies $$
+  \left(\begin{array}{ll} R & \underline{o} \\ \underline{o}^\top & 1 \end{array}\right)\cdot
+  \left(\begin{array}{ll} E & \underline{u} \\ \underline{o}^\top & 1 \end{array}\right)\cdot
+  \left(\begin{array}{ll} R^\top & \underline{o} \\ \underline{o}^\top & 1 \end{array}\right)=
+  \left(\begin{array}{ll} E & R^\top\cdot\underline{u} \\ \underline{o}^\top & 1 \end{array}\right) $$
+worin $\mathrm{T}$ invariant unter $\mathrm{D}$ gesucht ist.
+
+## Darstellungen
+
+### Quaternionen
+
+Definition
+===
+
+Komplexe Zahlen bilden die Grundlage zur Beschreibung ebener Bewegungsvorgänge, die beispielsweise in ebenen [Koppelgetrieben](https://de.wikipedia.org/wiki/Koppelgetriebe) entstehen und Gegenstand der ebenen Kinematik beziehungsweise Robotik sind.
+
+Auf der Suche, Bewegungen des dreidimensionalen Raumes elegant beschreiben zu können, entdeckte [Sir William Rowan Hamilton](https://de.wikipedia.org/wiki/William_Rowan_Hamilton) im Jahre 1843 die nach ihm benannten Quaternionen. Sie entstehen aus den reellen Zahlen durch Hinzufügen dreier neuer Zahlen, in Anlehnung an die imaginäre Einheit bei den komplexen Zahlen $i$, $j$ und $k$ genannt.
+
+Hier soll ein kurzer - in weiten Teilen unvollständiger - Einblick in diesen Zahlbereich gegeben werden, dessen alleiniger Fokus auf der Beschreibung von Drehungen und Schiebungen des dreidimensionalen Raumes liegt.
+
+>**Definition 1.** Eine [Quaternion](https://de.wikipedia.org/wiki/Quaternion) (engl.: quaternion) ist ein Ausdruck der Form $$
+  Q=a+i\cdot b+j\cdot c+k\cdot d
+$$ mit reellen Koeffizienten $a$, $b$, $c$ und $d$ und den Multiplikationsregeln
+>
+><!-- data-type="none" -->
+> | | $i$ | $j$ | $k$ |
+>| :--------- | :--------- | :--------- | :--------- |
+>| $i$  | $-1$ | $k$ | $-j$ |
+>| $j$  | $-k$ | $-1$ | $i$ |
+>| $k$  | $j$ | $-i$ | $-1$ |
+>
+> Die darin auftretende Zahl $a$ wird als *Realteil* von $Q$ bezeichnet, während die anderen Koeffizienten $(b,c,d)$ den *Imaginärraum* von $Q$ bilden.
+>
+> Die Menge aller Quaternionen wird mit $$
+  \mathbb{H}=\left\{a+i\cdot b+j\cdot c+k\cdot d\,|\, (a,b,c,d)\in\mathbb{R}^4\,\wedge\,i^2=j^2=k^2=-1\;\wedge\;i\cdot j\cdot k=-1\right\}
+$$ angegeben.[^1]
+
+
+Rechenoperationen
+===
+
+
+Die Multiplikation der quaternionalen Einheiten $i$, $j$ und $k$ ist assoziativ. Hieraus folgt z. B. $$
+  i\cdot j\cdot k=-1\quad\leftrightarrow\quad \textcolor{purple}{i}\cdot(i\cdot j\cdot k)=(i^2)\cdot j\cdot k=-j\cdot k=-\textcolor{purple}{i}
+$$ ebenso die restlichen Multiplikationsregeln aus Definition 1.
+
+<!-- style="background-color: lightgray;"-->
+>Es seien zwei Quaternionen $Q_m=a_m+b_m\,{i}+c_m\,{j}+d_m\,{k}\in\mathbb{H}$ mit $m\in\{1,2\}$ gemäß Definition 1 gegeben. Es sind die folgenden Operationen erklärt:
+>
+>1. Die **Addition** von $Q_1$ und $Q_2$ erfolgt komponentenweise mit $$
+  Q_1+Q_2=(a_1+a_2)+(b_1+b_2){i}+(c_1+c_2){j}+(d_1+d_2){k}
+$$
+>2. Die **Multiplikation** von $Q_1$ und $Q_2$ ist erklärt durch $$
+  \begin{split}
+    Q_1\cdot Q_2 & =\left(a_1a_2-b_1b_2-c_1c_2-d_1d_2\right) + \left(a_1b_2+b_1a_2+c_1d_2-d_1c_2\right){i} \\
+    & + \left(a_1c_2+c_1a_2+d_1b_2-b_1d_2\right){j} + \left(a_1d_2+d_1a_2+b_1c_2-c_1b_2\right){k} \\
+  \end{split}
+$$ Dieses Produkt erhält man durch Ausmultiplizieren der Klammern unter Benutzung der Produktregeln in Definition 1.
+
+**Beispiel 1.** Gegeben sind die Quaternionen $Q_1=1+j$ und $Q_2=1+i$. Dann berechnen sich die Produkte $$
+  Q_1\cdot Q_2=(1+j)\cdot(1+i)=1+i+j-k\quad\text{sowie}\quad
+  Q_2\cdot Q_1=(1+i)\cdot(1+j)=1+i+j+k
+$$
+
+**Bemerkung 1.** Aus Definition 1 und Beispiel 1 ist erkennbar, dass zwar die Addition von Quaternionen kommutativ ist, d. h. dass die Reihenfolge der Summanden vertauschbar ist, jedoch ist die Multiplikation zweier beliebiger Quaternionen im Allgemeinen nicht kommutativ: Das Produkt zweier Quaternionen liefert je nach Reihenfolge der Faktoren unterschiedliche Ergebnisse.
+
+Werden in Definition 1 $(c_m,d_m)=(0,0)$ beziehungsweise $(b_m,d_m)=(0,0)$ beziehungsweise $(b_m,c_m)=(0,0)$ gesetzt, so ergeben sich die Rechenregeln in $\mathbb{C}$.
+
+>**Definition 2.** Sei $Q\in\mathbb{H}$ mit $Q=a+i\cdot b+j\cdot c+k\cdot d$ eine beliebige Quaternion gemäß Definition 1. Dann heißt $$
+  \tilde{Q}=a-i\cdot b-j\cdot c-k\cdot d=a-(i\cdot b+j\cdot c+k\cdot d)
+$$ die zu $Q$ **quaternional konjugierte Zahl**.
+
+Analog zu $\mathbb{C}$ lässt sich nun bilden:
+
+<!-- style="background-color: lightgray;"-->
+> Der **Betrag** einer Quaternion $Q=a+i\cdot b+j\cdot c+k\cdot d$ mit reellen Koeffizienten $(a,b,c,d)\in\mathbb{R}^4$ ist definiert als $$
+  |Q|=\sqrt{Q\cdot\tilde{Q}}=\sqrt{a^2+b^2+c^2+d^2}\;\in[0,\infty)
+$$ Somit gilt $|Q|=0\;\leftrightarrow\; Q=0+0\cdot i+0\cdot j+0\cdot k=0$
+
+**Nachweis.** Für das Produkt  $Q\cdot\tilde{Q}$ folgt unter Benutzung der Multiplikationregel $$
+\begin{split}
+  Q\cdot\tilde{Q} & =
+  (Q=a+i\cdot b+j\cdot c+k\cdot d)\cdot (a-i\cdot b-j\cdot c-k\cdot d) \\
+  & = \left(a^2+b^2+c^2+d^2\right) + \left(-a\cdot b+b\cdot a-c\cdot d+d\cdot c\right){i} + \left(-a\cdot c+c\cdot a-d\cdot b+b\cdot d\right){j} + \left(-a\cdot d+d\cdot a-b\cdot c+c\cdot b\right){k} \\
+  & = \left(a^2+b^2+c^2+d^2\right)
+\end{split}
+$$ Der Ausdruck ist reell und für jede Wagl der Parameter $a$, $b$, $c$ und $d$ nicht negativ, wonach $|Q|$ wohldefiniert ist.
+
+$\square$
+
+
+Drehungen des dreidimensionalen Raums
+===
+
+
+Drehungen des dreidimensionalen Raumes um eine Gerade durch den Koordinatenursprung $O(0,0,0)$ lassen sich in Analogie zu den komplexen Zahlen unter Benutzung der Multiplikation von Quaternionen darstellen. Siehe Abschnitt [Komplexe Zahlen](#Komplexe-Zahlen).
+
+1. Die kartesischen Koordinaten $(x,y,z)$ eines Punktes werden umkehrbar eindeutig als imaginäre Quaternion dargestellt $$
+  (x,y,z)\in\mathbb{R}^3\quad\leftrightarrow\quad Q=x\cdot i+y\cdot j+z\cdot k\;(\in\mathbb{H})
+$$ Der Realteil der Quaternion $Q$ ist somit Null.
+2. Die Richtung und Orientierung einer Drehachse $e$ durch $O$ kann unter Verwendung "geographischer Koordinaten" $(\lambda,\mu)\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]$ angegeben werden. Sie berechnet sich $$
+  e=\left(\begin{array}{r} b \\ c \\ d \end{array}\right)=\left(\begin{array}{r} \cos{\lambda}\cdot\cos{\mu} \\ \sin{\lambda}\cdot\cos{\mu} \\ \sin{\mu} \end{array}\right)
+$$ Hierbei gilt $b^2+c^2+d^2=1$ für alle Paare $(\lambda,\mu)$, was der Länge des Richtungsvektors $e$ entspricht.
+3. Wird ein beliebiger Punkt um die Drehachse mit Drehwinkel $\varphi\in[0,2\pi)$ gedreht, so berechnen sich die kartesischen Koordinaten des Bildes des Punktes vermöge $$
+  (x',y',z')\quad\leftrightarrow\quad Q'=x'\cdot i+y'\cdot j+z'\cdot k
+$$ mit $$
+  Q'=Q_\varphi\cdot Q\cdot\tilde{Q}_\varphi\quad\text{und}\quad Q_\varphi=\cos{\left(\frac{\varphi}{2}\right)}+\sin{\left(\frac{\varphi}{2}\right)}\cdot\left(b\cdot i+c\cdot j+d\cdot k\right)
+$$ Wie bei komplexen Zahlen wie $z_\varphi\in\mathbb{C}$ mit $|z_\varphi|=1$ zur Beschreibung von Drehungen der Ebene gilt auch hier $$
+  |Q_\varphi|^2=Q_\varphi\cdot\tilde{Q}_\varphi=\left(\cos{\left(\frac{\varphi}{2}\right)}\right)^2+\left(\sin{\left(\frac{\varphi}{2}\right)}\right)^2\cdot\left(b^2+c^2+d^2\right)=1\quad\leftarrow\quad b^2+c^2+d^2=1
+$$ Die aus der Konstruktion der Drehachsenrichtung erhaltene Eigenschaft der Länge Eins (2.) ist für die Konstruktion des Bildes $Q'$ notwendig.
+
+**Beispiel 2.** Die Drehung des dreidimensionalen Raums um die $x$-Achse des Koordinatensystems mit einem Drehwinkel $60^\circ$ soll unter Benutzung des Quaternionenkalküls beschrieben werden.
+
+1. Die kartesischen Koordinaten $(x,y,z)$ eines Punktes in allgemeiner Lage werden umkehrbar eindeutig als imaginäre Quaternion dargestellt $$
+  (x,y,z)\in\mathbb{R}^3\quad\leftrightarrow\quad Q=x\cdot i+y\cdot j+z\cdot k\;(\in\mathbb{H})
+$$
+2. Für die Drehachsenrichtung ergibt sich der Vektor $$
+  e=\left(\begin{array}{r} 1 \\ 0 \\ 0 \end{array}\right)=\left(\begin{array}{r} \cos{0}\cdot\cos{0} \\ \sin{0}\cdot\cos{0} \\ \sin{0} \end{array}\right)
+$$ Unter Berücksichtigung des Drehwinkels $\varphi=\frac{\pi}{3}$ ergibt sich die Quaternion $Q_\varphi$ zur Bechreibung der Drehung $$
+  Q_\varphi=\cos{\left(\frac{\pi}{6}\right)}+\sin{\left(\frac{\pi}{6}\right)}\cdot\left(1\cdot i+0\cdot j+0\cdot k\right)=\cos{\left(\frac{\pi}{6}\right)}+\sin{\left(\frac{\pi}{6}\right)}\cdot i=\frac{1}{2}\cdot\sqrt{3}+\frac{1}{2}\cdot i
+$$
+3. Für das Bild $Q'$ von $Q$ unter der Drehung ergibt sich somit unter Nutzung der Multiplikationsregeln und der Assoziativität $$
+  \begin{split}
+    Q' & =Q_\varphi\cdot Q\cdot\tilde{Q}_\varphi \\
+    & = \left(\frac{1}{2}\cdot\sqrt{3}+\frac{1}{2}\cdot i\right)\cdot(x\cdot i+y\cdot j+z\cdot k)\cdot\left(\frac{1}{2}\cdot\sqrt{3}-\frac{1}{2}\cdot i\right) \\
+    & = \left[-\frac{x}{2}+i\cdot\frac{1}{2}\cdot\sqrt{3}\cdot x+j\cdot\left(\frac{1}{2}\cdot\sqrt{3}\cdot y-\frac{z}{2}\right)+k\cdot\left(\frac{1}{2}\cdot\sqrt{3}\cdot z+\frac{y}{2}\right)\right]\cdot\left(\frac{1}{2}\cdot\sqrt{3}-\frac{1}{2}\cdot i\right) \\
+    & = -\frac{1}{4}\cdot\sqrt{3}\cdot x+i\cdot\frac{3}{4}\cdot x+j\cdot\left(\frac{3}{4}\cdot y-\frac{1}{4}\cdot\sqrt{3}\cdot z\right)+k\cdot\left(\frac{3}{4}\cdot z+\frac{1}{4}\cdot\sqrt{3}\cdot y\right)+i\cdot \frac{x}{4}+\frac{1}{4}\cdot\sqrt{3}\cdot x +k\cdot\left(\frac{1}{4}\cdot\sqrt{3}\cdot\cdot y-\frac{z}{4}\right)-j\cdot\left(\frac{1}{4}\cdot\sqrt{3}\cdot z+\frac{y}{4}\right) \\
+    & = i\cdot x+ j\cdot\left(\frac{1}{2}\cdot y-\frac{1}{2}\cdot\sqrt{3}\cdot z\right)+k\cdot\left(\frac{1}{2}\cdot\sqrt{3}\cdot y+\frac{1}{2}\cdot z\right)
+  \end{split}
+$$ Der Bildpunkt besitzt somit die kartesischen Koordinaten $$
+  Q\left[x,
+  \left(\frac{1}{2}\cdot y-\frac{1}{2}\cdot\sqrt{3}\cdot z\right),
+  \left(\frac{1}{2}\cdot\sqrt{3}\cdot y+\frac{1}{2}\cdot z\right)
+\right]
+$$
+
+Sicher gewusst
+===
+
+Prüfen Sie Ihr Wissen aus diesem Abschnitt bei der Beantwortung der nachstehenden Fragen.
+
+**Frage 1.** Gegeben sind die Quaternionen $Q_1=4j-2k$ und $Q_2=1-i$ gegeben. Berechnen Sie die nachstehenden Ausdrücke.
+
+[[$Q_1\cdot Q_2$] [$$Q_2\cdot Q_1$$]]
+[( ) (X)]  $2j-6k$
+[(X) ( )]  $6j+2k$
+[[?]] Nutzen Sie zur Berechnung der Produkte die Multiplikationstafel in Definition 1.
+****************************************
+
+Die Produkte berechnen sich schrittweise $$
+  Q_1\cdot Q_2=(4j-2k)\cdot(1-i)=4j-4ji-2k+2ki=4j+4k-2k+2j=6j+2k
+$$ sowie $$
+  Q_2\cdot Q_1=(1-i)\cdot(4j-2k)=4j-2k-4ij+2ik=4j-2k-4k-2j=2j-6k\;\neq Q_1\cdot Q_2
+$$
+
+****************************************
+
+**Frage 2.** Eine Drehung des dreidimensionalen Raumes soll um die Gerade $$
+  x=0\;\wedge\; z=y
+$$ erfolgen. Der Drehwinkel ist $90^\circ$ angegeben.
+
+Berechnen Sie die Quaternion $Q_\varphi$ im Ansatz  $Q'=Q_\varphi\cdot Q\cdot \tilde{Q}_\varphi$ zur Beschreibung der Drehung.
+
+[[ ]] $$ \frac{1}{2}\cdot\sqrt{2}\cdot j+\frac{1}{2}\cdot\sqrt{2}\cdot k $$
+[[X]] $$ \frac{1}{2}\cdot\sqrt{2}+\frac{1}{2}\cdot j+\frac{1}{2}\cdot k $$
+[[X]] $$ \frac{1}{2}\cdot\sqrt{2}-\frac{1}{2}\cdot j-\frac{1}{2}\cdot k $$
+[[ ]] $$ \frac{1}{2}\cdot\sqrt{2}+\frac{1}{2}\cdot\sqrt{2}\cdot j+\frac{1}{2}\cdot\sqrt{2}\cdot k $$
+[[?]] Bestimmen Sie die Richtung der Drehachse und normieren Sie diesen Vektor. Setzen Sie dann in den Ansatz $$
+  Q_\varphi=\cos{\left(\frac{\varphi}{2}\right)}+\sin{\left(\frac{\varphi}{2}\right)}\cdot\left(b\cdot i+c\cdot j+d\cdot k\right)
+$$ ein, worin $(b,c,d)$ die Drehachsenrichtung und $\varphi$ den Drehwinkel bezeichnen.
+****************************************
+
+Für den Drehwinkel gilt $\frac{\varphi}{2}=45^\circ$ und damit $$
+  \cos{\left(\frac{\varphi}{2}\right)}=\sin{\left(\frac{\varphi}{2}\right)}=\frac{1}{2}\cdot\sqrt{2}
+$$ Für die Drehachsenrichtung ergeben sich die 'geographischen' Koordinaten $\lambda=\frac{\pi}{2}$ und $\mu=\frac{\pi}{4}$, also $$
+  e=\left(\begin{array}{r} \cos{\left(\frac{\pi}{2}\right)}\cdot\cos{\left(\frac{\pi}{4}\right)} \\ \sin{\left(\frac{\pi}{2}\right)}\cdot\cos{\left(\frac{\pi}{4}\right)} \\ \sin{\left(\frac{\pi}{4}\right)} \end{array}\right)=
+  \left(\begin{array}{r} 0 \\ \frac{1}{2}\cdot\sqrt{2} \\ \frac{1}{2}\cdot\sqrt{2} \end{array}\right)
+$$ Alternativ berechnet sich $e$ über Stauchung des Vektors mit dem Parameter $\alpha$ $$
+  e=\left(\begin{array}{r} 0 \\ \alpha \\ \alpha \end{array}\right)
+$$ so dass $0^2+\alpha^2+\alpha^2=2\cdot\alpha^2=1$ gilt: Dies ist für $\alpha=\pm\frac{1}{2}\cdot\sqrt{2}$ erfüllt. Schließlich ergibt sich daraus $$
+  Q_\varphi=\cos{\left(\frac{\pi}{4}\right)}+\sin{\left(\frac{\pi}{4}\right)}\cdot\left(\pm\frac{1}{2}\cdot\sqrt{2}\cdot j\pm\frac{1}{2}\cdot\sqrt{2}\cdot k\right)=\frac{1}{2}\cdot\sqrt{2}\pm\frac{1}{2}\cdot j\pm\frac{1}{2}\cdot k
+$$ worin genau eines der Operationszeichen zu wählen ist.[^2]
+
+Hingegen entfällt die erste Antwortoption, da dort nicht $\frac{\varphi}{2}$, sondern $\varphi$ verwendet wurde. Bei der letzten Antwortoption ist wurde vergessen, den Vektor $e$ zu normieren.
+
+****************************************
+
+[^1]: Die bei der Angabe von $\mathbb{H}$ abweichenden Multiplikationsregeln sind aus Gründen der Lesbarkeit gewählt und werden im folgenden Abschnitt erklärt.
+
+[^2]: Bei Angabe der Quaternion $Q_\varphi$ ist nicht nur die Drehachse anzugeben, sondern auf deren Richtungssinn festzulegen. Der Drehwinkel wird bezüglich des gewählten Richtungssinns angegeben - 'plus' beziehungsweise 'minus'.
